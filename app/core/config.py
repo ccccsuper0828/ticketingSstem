@@ -44,6 +44,11 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("DB_TIMEOUT", "DB_CONNECT_TIMEOUT_MS"),
     )
 
+    # Redis
+    redis_host: str = Field(default="127.0.0.1", validation_alias=AliasChoices("REDIS_HOST"))
+    redis_port: int = Field(default=6379, validation_alias=AliasChoices("REDIS_PORT"))
+    redis_db: int = Field(default=0, validation_alias=AliasChoices("REDIS_DB"))
+    redis_password: str | None = Field(default=None, validation_alias=AliasChoices("REDIS_PASSWORD"))
     model_config = SettingsConfigDict(
         env_file=".env",
         env_prefix="",

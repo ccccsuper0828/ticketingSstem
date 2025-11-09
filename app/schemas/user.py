@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, EmailStr
 from pydantic import ConfigDict
@@ -17,6 +17,19 @@ class UserUpdate(BaseModel):
     password: Optional[str] = None
     role: Optional[str] = None
     avatar: Optional[str] = None
+    phone: Optional[str] = None
+
+class UserMeUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    isAdmin: bool
+    roles: List[str]
+    userId: int
 
 
 class UserRead(BaseModel):
@@ -25,6 +38,8 @@ class UserRead(BaseModel):
     email: EmailStr
     role: str
     avatar: Optional[str] = None
+    phone: Optional[str] = None
+    credit: int
     created_at: datetime
     updated_at: datetime
 

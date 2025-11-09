@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
 from app import crud
 from app.schemas import user as user_schemas
+from app.core.security import get_current_user
+from app import models
 
 
 router = APIRouter()
@@ -52,6 +54,29 @@ def update_user(user_id: int, user: user_schemas.UserUpdate, db: Session = Depen
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.user.delete_user(db, user_id=user_id)
     if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+
+@router.get("/me", response_model=user_schemas.UserRead)
+def read_me(current_user: models.User = Depends(get_current_user)) -> models.User:
+    return current_user
+
+
+@router.put("/me", response_model=user_schemas.UserRead)
+def update_me(
+    payload: user_schemas.UserMeUpdate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    # 限制仅可改本人的非敏感字段
+    update = user_schemas.UserUpdate(
+        username=payload.username,
+        email=payload.email,
+        phone=payload.phone,
+    )
+    db_user = crud.user.update_user(db, user_id=current_user.id, user=update)
+    if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 

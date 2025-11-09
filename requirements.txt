@@ -7,5 +7,11 @@ email-validator>=2.1.0.post1
 pydantic-settings>=2.3.0
 alembic>=1.13.2
 python-dotenv>=1.0.1
+passlib[bcrypt]>=1.7.4
+PyJWT>=2.9.0
+bcrypt==3.2.2
+qrcode[pil]>=7.4.2
+aiofiles>=23.2.1
+redis>=5.0.0
 
 

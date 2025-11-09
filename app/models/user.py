@@ -17,6 +17,7 @@ class User(Base):
     role = Column(SAEnum(UserRole, name="user_role"), nullable=False, default=UserRole.customer)
     avatar = Column(String(512), nullable=True, default=DEFAULT_AVATAR)
     credit = Column(Integer, nullable=False, default=0)
+    phone = Column(String(30), nullable=True)
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
     updated_at = Column(
         DateTime,
